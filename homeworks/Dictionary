@@ -1,8 +1,8 @@
 color - Color of the crab in the data set.
 sex - Sex of the crab in the data set.
 frontal lobe - Size of the frontal lobe. (Guessing in cm?)
-rear width - Size of the 
-carapace length -
-carapace width - 
-body depth - 
-latitude - 
+rear width - Size of the rear width.
+carapace length - Length of the carapace.
+carapace width - Width of the carapace.
+body depth - Depth of the crabs body.
+latitude - Latitude location on a map.
