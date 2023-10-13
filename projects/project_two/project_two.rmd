@@ -152,7 +152,8 @@ Both body depth and Frontal lobe are highly significant but rear width is not in
 1) Add and commit this document (5 pts)
 
 ```
-#Commands here
+git add project_two.rmd
+git commit -m "project 2"
 ```
 
 2) Push your changes to github (10 pts)
