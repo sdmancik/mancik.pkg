@@ -1,0 +1,168 @@
+---
+title: "Project Two"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+Due Oct. 13 at 11:59 PM. 
+
+For this first part of the exam, you can either use `surveys_complete.csv` or your own data. If you are using your own data, you must have data in which you think you have a numerical predictor variable and a numerical response variable. If you are using `surveys_complete`, you can use weight and hindfoot_length for this.
+
+Save this file in your `projects` directory. You can either save it in a project two subdirectory, or just put it in projects. Either way is fine.
+
+
+1) Load in your data. Which variable will you be using as a predictor, and which as a response? (5 pts)
+
+surveys <-read_csv("data/surveys.csv")
+```
+
+```
+predictor - hindfoot length response - Weight
+```
+
+2) Plot the two against each other with a scatter plot. Does the data appear to be related linearly? (5 pts)
+
+
+```{r}
+ggplot(surveys_complete, aes(x = weight, y = hindfoot_length)) + geom_point()
+```
+
+```
+No
+```
+
+
+3) Fit the linear model. View the summary. (5 pts)
+
+
+```{r}
+model_fit <- lm(hindfoot_length~weight, data = surveys_complete)
+summary(model_fit)
+```
+
+4) Does the summary make sense when you compare it to the plot you made? Does our model have good predictive power? Evaluate the residual standard error, intercept, and R-Squared in particular. Would you say your predictor predicts the response?  (10 pts)
+
+
+```
+# Yes, with an R value of 0.4673 I would say it has good predictive power. Yes I would say weight being the independant variable is highly significant and predicts hindfoot length well.
+```
+
+
+5) Plot the model on the graph. Increase the size of the text so it is comfortably readable at 5 feet. Make sure axis labels are readable and not overlapping with one another. (5 pts)
+
+```
+# ggplot(surveys_complete, aes(x = weight, y = hindfoot_length)) + theme(text = element_text(size = 35)) + geom_point()
+```
+
+
+6) Check the normality of the residuals. Do they look OK? Are we violating assumptions? (5 pts)
+
+```{r}
+
+# The median residuals are close to zero and the plot somewhat follows so it seems okay, but there is a wide spread between positive and negative values that could suggest someting wrong with the correlation between hindfoot length and weight.
+
+```
+
+Why is normality of residuals important? 
+
+```{r}
+
+#Normality of residuals is important to prove that the data is accurate and reliable.
+```
+
+7) If you are using `surveys_complete`: Is there interspecific variation in the linear model? Hint: look at our prior work with facet plots. (15 pts) 
+
+If you are *not* using  `surveys_complete`: Do you think there are groupings within your data that may have a separate linear model? Try grouping the data by that variable and redoing the lm. If this would not make sense for your data, you may also attempt to do multiple predictor variables. (15 pts)
+
+```{r}
+#ggplot(data = surveys_complete, mapping = aes(x = hindfoot_length, y = weight)) +
++     geom_line() +
++     facet_wrap(facets =  vars(species_id))
+```
+
+## Part Two
+
+In this portion, you are free to use your own data if you have a categorical predictor variable and a response variable. Otherwise, you may use the columns sex and weight in `surveys_complete`
+
+1) First, plot the data grouped by sex (5 pts)
+
+```{r}
+
+surveys_complete %>% group_by(sex, weight) %>% summarize(mean_weight = mean(weight)) %>% ggplot(aes(x = sex, y = mean_weight))+ geom_point()
+```
+
+2) Try an ANOVA of this data (5 pt)
+
+```{r}
+ggplot(surveys_complete, aes(x = sex, y = weight, color = sex)) + 
++     geom_jitter() + 
++     labs(x = "Sex", y = "weight") +
++     theme(legend.position = "none") +
++     stat_summary(fun.data = "mean_se", # calculate mean and se
++                  color = "black") 
+```
+
+3) How about a linear model? What information does this give you that an ANOVA can't? (5 pts)
+
+
+```{r}
+model_fit <- lm(weight~sex, data = surveys_complete)
+
+```
+
+```
+Linear models are used to help understand relationships between variables and to predict dependent variables while an ANOVA models are used to compare group means.
+```
+
+3) Plot the lm with the data, with points colored by sex. (10 pts)
+
+
+```{r}
+ggplot(surveys_complete, aes(x = weight, y = sex)) +
+    geom_point(aes(color = sex)) +
+    geom_smooth(method = "lm") +
+    labs(x = "Weight", y = "Sex") +
+    scale_color_manual(values = c("blue", "red"))
+```
+
+4) Choose any model we've looked at so far, but use two predictor variables. Perform an LM, plot the results, and state if this changes your interpretation of the relationship between variables (10 pts)
+
+```{r}
+model_fit <- lm(body_depth~frontal_lobe + rear_width, data = crabs) 
+```
+
+```{r}
+ggplot(crabs, aes(x = rear_width, y = body_depth, color = frontal_lobe)) + 
++     geom_point(size = 2.5) + 
++     labs(x = "rear_width (mm)", 
++     y = "Body depth (mm)",
++     color = "frontal_lobe (mm)") +
++     scale_color_distiller(palette = "Reds") +
++     annotate("text", x = 20, y = 30, label = "R^2 == 0.976", parse=T, size=5) + 
++     theme(legend.position = "bottom") 
+augment(model_fit) -> augmented_fit
+qqnorm(augmented_fit$.resid)
+qqline(augmented_fit$.resid, col = "red")
+
+```
+Both body depth and Frontal lobe are highly significant but rear width is not in explaining variability for body depth. This means the average crabs body depth only increases by 0.049mm per 1 mm increase in body depth and this tells me there isn't a very good relationship between body depth increasing in correlation with rear width.
+
+
+1) Add and commit this document (5 pts)
+
+```
+#Commands here
+```
+
+2) Push your changes to github (10 pts)
+
+```
+git push -u origin main
+```
+
+
+
+# MS students
+
+My expectation is that you'll do this with your own data. If any part of this doesn't make sense with your data, please get in touch ASAP so we can work it out.
