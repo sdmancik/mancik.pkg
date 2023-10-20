@@ -1,6 +1,6 @@
-remove_nas <- function(surveys, weight){
+remove_nas <- function(crabs, weight){
   clean <- data %>% 
-    na.omit(surveys) %>% 
+    na.omit(crabs) %>% 
     select(weight) %>% 
     return(clean)
 }
