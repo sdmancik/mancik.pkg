@@ -1,6 +1,6 @@
 info_plot <- function(lm_model){
   if(!inherits(lm_model, "lm")) {
-    stop("Must use a Linear model")
+    stop("Loud Wookie sounds......Must use a Linear model....RRWWWGG!")
   }  
   augment_crabs <- augment(lm_model)
   
