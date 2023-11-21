@@ -1,6 +1,10 @@
-remove_nas <- function(crabs, weight){
+remove_nas <- function(data, column_name){
   clean <- data %>% 
-    na.omit(crabs) %>% 
-    select(weight) %>% 
+    na.omit() %>% 
+    select(({{ column_name }})) 
+  if (sum(is.na(clean)) == 0){
     return(clean)
+  } else {
+    print("NAs still present!")
+  }
 }
